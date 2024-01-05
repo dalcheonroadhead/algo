@@ -8,13 +8,10 @@ public class Main {
     // 앞에 것, 뒤의 것 계속 움직이기
 
     static int N ;
-    static int S ;
+    static int M ;
 
     // 전체 문자열
     static String str;
-
-    // Pn 문자열
-    static String Pn;
 
     public static void main(String[] args) throws IOException {
 
@@ -22,79 +19,40 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         N = Integer.parseInt(br.readLine());
-        S = Integer.parseInt(br.readLine());
+        M = Integer.parseInt(br.readLine());
 
         str = br.readLine();
 
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < 2*N+1; i++) {
-            if(i%2 == 0){
-                sb.append("I");
+
+        int IOICnt = 0;
+        int resultCnt = 0;
+
+        // N의 값 => Pn의 IOI 숫자
+        // ex) P1 = IOI임. 이때, N = 1 , P3 = IOIOIOI. 이때 N = 3
+
+        for (int i = 1; i < M; i++) {
+
+            // IOI 체킹
+            if(i+1 <= str.length()-1 && str.charAt(i-1) == 'I' && str.charAt(i) == 'O' && str.charAt(i+1) == 'I'){
+                IOICnt++;
+
+                // 만약 하나의 성공적인 Pn을 찾았다면, 두칸 이동해서 또 성공적인 Pn을 찾는 경우의 수도 있음.
+                // 따라서 IOI 카운트를 하나 줄인다.
+                // IOI 카운트를 하나 줄인다는 말의 의미는 맨 앞에 체크했던 유효한 수를 하나 버린다는 뜻이다.
+
+                if(IOICnt == N){
+                    IOICnt--;
+                    resultCnt++;
+                }
+                // 2칸으로 바로 이동해서 다시 IOI 체킹
+                i++;
             }
             else {
-                sb.append("O");
+                // 지금까지 셋던 것이 의미가 없으므로 무로 돌린다.
+                IOICnt = 0;
             }
         }
 
-        Pn = sb.toString();
-
-        int start = 0;
-        int end = 0;
-        int PnLoc = 0;
-
-        int validCnt = 0;
-
-        for (int i = 0; i < S; i++) {
-
-            // 현재 투 포인터의 시작 점과 끝 점이 같다.
-                // -> start가 표본값과 같으면 end를 출발시킨다.
-                // -> 같지 않으면, start, end를 다음 문자를 바라보도록 넘긴다.
-            if(start == end){
-//                System.out.printf("%s || %s\n", str.charAt(start), Pn.charAt(PnLoc));
-             if(str.charAt(start) == Pn.charAt(PnLoc)){
-
-                 PnLoc = (PnLoc+1)%(2*N+1);
-                 end++;
-
-             }else {
-                 PnLoc = 0;
-                 start ++;
-                 end ++;
-                 i = start;
-             }
-
-            }else {
-//                System.out.printf("%s || %s\n", str.charAt(end), Pn.charAt(PnLoc));
-                // end 포인터가 표본값과 같다. end를 다음 문자로 넘긴다. 표본 조회도 다음 조회로 넘긴다.
-                if(str.charAt(end) == Pn.charAt(PnLoc)){
-                    end++;
-                    PnLoc++;
-
-                    // 확인한 문자열의 길이가 표본값과 같으면
-                    if(PnLoc == 2*N+1){
-//                        System.out.printf("스타트의 위치: %d\n", start);
-                        validCnt++;
-                        start++;
-//                        System.out.println("바뀐 start의 위치" + start);
-                        end = start;
-                        i = start;
-                        PnLoc = 0;
-                    }
-                }
-                // end 포인터와 표본값이 같지 않다. start를 한칸 올리고 재시작한다.
-                else {
-                    start ++;
-                    end = start;
-                    PnLoc = 0;
-                    i = start;
-                }
-
-
-
-
-
-            }
-        }
-        System.out.printf("%d", validCnt);
+        System.out.println(resultCnt);
     }
 }
