@@ -29,14 +29,18 @@ public class Main {
         int N = Integer.parseInt(br.readLine());
         int cnt = 0;
 
-        for (int i = 1; i < 4; i++) {
+//        for (int i = 1; i < 4; i++) {
+//
+//            int exp = 5;
+//            for (int j = 1; j < i; j++) {
+//                exp = exp*5;
+//            }
+//            cnt += N/exp;
+//        }
 
-            int exp = 5;
-            for (int j = 1; j < i; j++) {
-                exp = exp*5;
-            }
-            cnt += N/exp;
-        }
+        cnt += N/5;
+        cnt += N/25;
+        cnt += N/125;
 
         System.out.println(cnt);
     }
