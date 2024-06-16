@@ -67,13 +67,14 @@
 
 ### ⓐ n=2 일 때,
 
- ![image-20240616181414170](../../../../Documents/GitHub/dalcheonroadhead-github-blog/dalcheonroadhead.github.io/images/[Programmers] 12903 3xn 타일링/image-20240616181414170.png)
+![image-20240616181414170](https://github.com/dalcheonroadhead/algo/assets/102154788/46f638ed-42b2-4df6-8e9e-3a2473505f7e)
 
 n=2인 바닥을 전부 채우는 경우는 위의 3가지이다. 
 
 ### ⓑ n=4 일 때,
 
-![image-20240616181555852](../../../../Documents/GitHub/dalcheonroadhead-github-blog/dalcheonroadhead.github.io/images/[Programmers] 12903 3xn 타일링/image-20240616181555852.png)
+![image-20240616181555852](https://github.com/dalcheonroadhead/algo/assets/102154788/dbcdffef-fb2e-492d-a3e1-588820c32482)
+
 
 자, 이제부터 집중해야 한다. 
 
@@ -88,7 +89,8 @@ n=2인 타일에서 2칸 더 추가해서 이어나간다고 가정하자. 이�
 
 ### ⓒ n=6 일 때,
 
-![image-20240616182245691](../../../../Documents/GitHub/dalcheonroadhead-github-blog/dalcheonroadhead.github.io/images/[Programmers] 12903 3xn 타일링/image-20240616182245691.png)
+![image-20240616182245691](https://github.com/dalcheonroadhead/algo/assets/102154788/5edb12d6-ede3-4304-aba3-4abc00f86e76)
+
 
 이것도 n=4와 똑같이 2가지 유형으로 나누어서 생각해야한다.
 
@@ -108,7 +110,7 @@ n=2인 타일에서 2칸 더 추가해서 이어나간다고 가정하자. 이�
 
 ### ⓓ n=8일 때, 
 
-![image-20240616183543413](../../../../Documents/GitHub/dalcheonroadhead-github-blog/dalcheonroadhead.github.io/images/[Programmers] 12903 3xn 타일링/image-20240616183543413.png)
+![image-20240616183543413](https://github.com/dalcheonroadhead/algo/assets/102154788/abac003d-e24c-4b94-b020-c63a16008e2f)
 
 **첫 번째, 이전까지 나온 경우의 수들을 조합하는 경우**
 더 설명하지 않아도 될 것 같다. 
@@ -124,7 +126,8 @@ n=2인 타일에서 2칸 더 추가해서 이어나간다고 가정하자. 이�
 
 지금까지 알아본 규칙성으로 가로가 n인 바닥을 완전히 메우는 경우의 수는 다음과 같은 식으로 구할 수 있다.
 
-![image-20240616184242481](../../../../Documents/GitHub/dalcheonroadhead-github-blog/dalcheonroadhead.github.io/images/[Programmers] 12903 3xn 타일링/image-20240616184242481.png)
+![image-20240616184242481](https://github.com/dalcheonroadhead/algo/assets/102154788/cff9799e-0ac9-45b4-80c2-8a48d2d1d4fe)
+
 
 # 3. 코드 분석
 
