@@ -14,17 +14,7 @@ public class Main {
         for (int i = 1; i <= N; i++) {
             st = new StringTokenizer(br.readLine());
             for (int j = 1; j <= N; j++) {
-                // 1) 좌, 상 테두리 부분 계산 -> 1차원 배열 누적 합
-                if(i == 1) {
-                    sum[i][j] = sum[i][j-1] + Integer.parseInt(st.nextToken());
-                }
-                else if(j == 1) {
-                   sum[i][j] = sum[i-1][j] + Integer.parseInt(st.nextToken());
-                }
-                // 2) 좌상단부터 현 위치 까지의 사각형 누적합 계산
-                else {
                     sum[i][j] = sum[i][j-1] + sum[i-1][j]  - sum[i-1][j-1] + Integer.parseInt(st.nextToken());
-                }
             }
         }
 
