@@ -16,14 +16,9 @@ public class Main {
         for (int i = 0; i < arr.length; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
             max = Math.max(arr[i], max);
+            sum += arr[i];
         }
 
-
-        for (int j : arr) {
-                sum += ((double) j / max) * 100.00;;
-        }
-
-        System.out.println(sum/arr.length);
-
+        System.out.println((sum/max)*100/ arr.length);
     }
 }
