@@ -8,41 +8,32 @@ public class Main {
         StringBuilder sb = new StringBuilder();
 
         int N = Integer.parseInt(br.readLine());
-        Node [] stack = new Node [N];
-        int [] NGE = new int [N];
+        int [] value = new int[N];      // index에 해당하는 value 저장
+        int [] stack = new int[N];      // index 만 저장
+        int [] nge = new int[N];        // index 당 자신의 오큰수 저장
         int top = -1;
 
         StringTokenizer st = new StringTokenizer(br.readLine());
-        stack[++top] = new Node(0, Integer.parseInt(st.nextToken()));
+        for (int i = 0; i < N; i++) {
+            value[i] = Integer.parseInt(st.nextToken());
+        }
+        stack[++top] = 0;
 
         for (int i = 1; i < N; i++) {
-            Node now = new Node(i, Integer.parseInt(st.nextToken()));
-
-            while (top != -1 && stack[top].v < now.v){
-                NGE[stack[top].i] = now.v;
-                stack[top--] = null;
+            // 현재 조회 중인 값보다 stack의 top 값이 작은 경우
+            while(top != -1 && value[stack[top]] < value[i]){
+                nge[stack[top--]] = value[i];
             }
 
-            if(top == -1 || stack[top].v >= now.v){
-                stack[++top] = now;
+            if(top == -1 || value[stack[top]] >= value[i]){
+                stack[++top] = i;
             }
         }
 
-        for (int value : NGE){
-            sb.append(value == 0? -1 : value).append(" ");
+        for (int now : nge){
+            sb.append(now == 0? -1 : now).append(" ");
         }
 
         System.out.println(sb);
-
-    }
-}
-
-class Node {
-    int i;
-    int v;
-
-    public Node (int i, int v){
-        this.i = i;
-        this.v = v;
     }
 }
