@@ -1,56 +1,42 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.StringTokenizer;
 
-public class Main {	
-	
-	static int N;
 
-    public static void main(String[] args) throws IOException {
-    	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    	N = Integer.parseInt(br.readLine());
-    	
-    	// 첫 번째 수는 처리 한 채로 주자 
-    	primeSearch(2,1);
-    	primeSearch(3,1);
-    	primeSearch(5,1);
-    	primeSearch(7,1);
-    	
-    	
+public class Main {
+    static int n;
+    static StringBuilder sb = new StringBuilder();
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        n = Integer.parseInt(br.readLine());
+
+        dfs(0,2);
+        dfs(0,3);
+        dfs(0,5);
+        dfs(0,7);
+
+        System.out.println(sb);
     }
-    
-    // 백트래킹 -> 소수판정으로 지금까지 모은 수가 소수면 GO, 아니면 Back
-    public static void primeSearch(int num, int deepth) {
-    	
-    	if(deepth == N) {
-    		System.out.println(num);
-    		return;
-    	}
-    	
-    	
-    	int nextNum;
-    	
-    	for(int i = 0; i< 10; i++) {
-    		nextNum = num*10 + i;
-    		if(judgeMent(nextNum)) {
-    			primeSearch(nextNum, deepth+1);
-    		}
-    	}
-    	return;
-    	
+
+    public static void dfs (int depth, int previous) {
+        if(depth == n-1){
+            sb.append(previous).append("\n");
+            return;
+        }
+
+        for (int i = 0; i < 10; i++) {
+            if (isPrime((previous*10 + i))){
+                dfs(depth+1, (previous*10+i));
+            }
+        }
     }
-    
-    // 소수 판정 -> 값이 소수인지 판정 
-    public static boolean judgeMent(int num) {
-    	int i = 2;
-    	while(i <= Math.sqrt(num)) {
-//    		System.out.println(num/i);
-    		if(num%i == 0) {
-    			return false;
-    		}
-    		i++;
-    	}
-    	
-    	return true;
+
+    public static boolean isPrime(int i){
+        for (int j = 2; j <= Math.sqrt(i); j++) {
+            if(i%j == 0) return false;
+        }
+        return true;
     }
 }
