@@ -1,75 +1,55 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 public class Main {
+    static int N, M;
+    static ArrayList<Integer>[] lists;
+    static boolean [] isVisited;
+    static boolean isValid = false;
+    static StringBuilder sb = new StringBuilder();
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        lists = new ArrayList[N];
+        isVisited = new boolean[N];
 
-	// 정점과 간선
-	static int V,E;
-	static ArrayList<Integer>[]  lists;
-	static boolean [] flag;
-	
-	// 입력 받은 그래프에서 갈 수 있는 최대 깊이를 계속 갱신
-	static int valid = 0;
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		V = Integer.parseInt(st.nextToken());
-		E = Integer.parseInt(st.nextToken());
-		
-		lists = new ArrayList[V];
-		
-		
-		for(int i = 0; i < V; i++) {
-			lists[i] = new ArrayList<>();
-		}
-		
-		for (int i = 0; i < E; i++) {
-			st = new StringTokenizer(br.readLine());
-			int from = Integer.parseInt(st.nextToken());
-			int to = Integer.parseInt(st.nextToken());
-			
-			lists[from].add(to);
-			lists[to].add(from);
-		}
-		
-		for(int i = 0; i< V; i++) {
-			flag = new boolean [V];
-			flag[i]=true;
-			dfs(i,1);
-			
-			if(valid == 1) {
-				break;
-			}
-		}
-		
-		System.out.println(valid);
-		
-	}
-	
-	// 깊이 우선 탐색으로 쭉 가고, 깊이가 5가 되면은 탈출해서 해당 그래프가 깊이 5까지 갈 수 있다고 알림. 
-	// 해당 깊이에서 더 이상 갈 수 없으면 return으로 돌아오고 다른 깊이를 탐색
-	public static void dfs(int index, int deepth) {
-		
-		//기저조건 -> 만약 깊이가 5가 되면 1 반환하고 탈출 
-		if(deepth == 5) {
-			valid =1;
-			return;
-		}
-		
-		
-		
-		
-		
-		for(int i = 0; i < lists[index].size(); i++) {
-			if(flag[lists[index].get(i)]) continue;
-			
-			flag[lists[index].get(i)]= true;
-			dfs(lists[index].get(i), deepth+1);
-			flag[lists[index].get(i)] = false;
-		}
-		
-	}
+        for (int i = 0; i < N; i++) {
+            lists[i] = new ArrayList<>();
+        }
+
+        for (int i = 0; i < M; i++) {
+            st = new StringTokenizer(br.readLine());
+            int start = Integer.parseInt(st.nextToken());
+            int end = Integer.parseInt(st.nextToken());
+            lists[start].add(end);
+            lists[end].add(start);
+        }
+        for (int i = 0; i < N; i++) {
+            isVisited[i] = true;
+            dfs(0,i);
+            isVisited[i] = false;
+            if(isValid) break;
+        }
+        if(!isValid) System.out.println(0);
+        else System.out.println(1);
+    }
+    public static void dfs(int depth, int vertex) {
+        if(depth == 4){
+            isValid = true;
+            return;
+        }
+
+        for (int i = 0; i < lists[vertex].size(); i++) {
+            int next = lists[vertex].get(i);
+            if(!isVisited[next]){
+                isVisited[next] = true;
+                dfs(depth+1, next);
+                if(isValid) return;
+                isVisited[next] = false;
+            }
+        }
+    }
 }
