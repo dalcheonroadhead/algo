@@ -1,84 +1,69 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 
-/*  1167 트리의 지름
- * */
-
-/*  문제 풀이 방법
- *  다익스트라를 이용하여 각 정점에서의 다른 정점으로의 거리를 구한다.
- *  최단 거리가 가장 긴 녀석을 출력한다.
- * */
-
 public class Main {
-
-    static int N;
-    static ArrayList<int[]> [] lists;
-    static boolean [] isVisited;
-
-    static int totalLong = 0;
-    static int curLong = 0;
-    static int startPoint  = 0;
-
-    public static void main(String[] args) throws IOException {
+    static int V;
+    static ArrayList<Node> [] list;
+    public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        V = Integer.parseInt(br.readLine());
 
-        N = Integer.parseInt(br.readLine());
-        lists = new  ArrayList[N+1];
+        list = new ArrayList[V+1];
 
-
-        for (int i = 1; i <= N; i++) {
-            lists[i] = new ArrayList<>();
+        for (int i = 1; i <= V; i++) {
+            list[i] = new ArrayList<>();
         }
 
-        for (int i = 0; i < N; i++) {
+        for (int i = 0; i < V; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-
             int start = Integer.parseInt(st.nextToken());
             while (st.hasMoreTokens()){
                 int end = Integer.parseInt(st.nextToken());
-
                 if(end == -1) break;
-                else{
-                    int weight = Integer.parseInt(st.nextToken());
-                    lists[start].add(new int[]{end, weight});
-                }
+                int weight = Integer.parseInt(st.nextToken());
+                list[start].add(new Node(end, weight));
             }
         }
-
-        isVisited = new boolean[N+1];
-        vertical(1);
-        isVisited = new boolean[N+1];
-        vertical(startPoint);
-//            System.out.println("출발점: " + i + "현재 최고 지름:" + totalLong);
-
-
-        System.out.println(totalLong);
+        Node far_node  = bfs(1);
+        Node ans_node = bfs(far_node.v);
+        System.out.println(ans_node.w);
     }
+    // 현 노드에서 제일 먼 Node 출력
+    public static Node bfs (int start) {
+        int max_vertex = 0;
+        int max_weight = 0;
+        boolean [] isVisited = new boolean[V+1];
+        ArrayDeque<Node> aq1 = new ArrayDeque<>();
 
-
-    public static void vertical(int start){
+        aq1.add(new Node(start, 0));
         isVisited[start] = true;
 
-        int passCnt = 0;
-        for (int i = 0; i < lists[start].size(); i++) {
-            int end = lists[start].get(i)[0];
-            if(!isVisited[end]) {
-                curLong += lists[start].get(i)[1];
-                isVisited[end] = true;
-                vertical(end);
-                curLong -= lists[start].get(i)[1];
-                isVisited[end] = false;
-            }else{
-                passCnt++;
+        while (!aq1.isEmpty()){
+            Node now = aq1.poll();
+            if(now.w > max_weight){
+                max_vertex = now.v;
+                max_weight = now.w;
             }
-        }
-        if(passCnt == lists[start].size()){
-            if(totalLong < curLong){
-                totalLong = curLong;
-                startPoint = start;
+            for (int i = 0; i < list[now.v].size(); i++) {
+                Node next = list[now.v].get(i);
+                if(!isVisited[next.v]){
+                    isVisited[next.v] = true;
+                    aq1.add(new Node(next.v, now.w + next.w));
+                }
             }
+
         }
+
+        return  new Node(max_vertex, max_weight);
+    }
+}
+
+class Node {
+    int v;
+    int w;
+
+    public Node(int v, int w){
+        this.v = v;
+        this.w = w;
     }
 }
