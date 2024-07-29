@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/1218. ［S／W 문제해결 기본］ 4일차 － 괄호 짝짓기" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/1233. ［S／W 문제해결 기본］ 9일차 － 사칙연산 유효성 검사" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
