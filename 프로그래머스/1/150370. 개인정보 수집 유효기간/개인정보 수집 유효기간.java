@@ -32,41 +32,18 @@ class Solution {
         for(int i = 0; i < privacies.length; i++){
             StringTokenizer outer = new StringTokenizer(privacies[i]);
             StringTokenizer inner = new StringTokenizer(outer.nextToken(), ".", false);
-            String term = outer.nextToken();
-            int expire = map.get(term);
-            
-            int year    = Integer.parseInt(inner.nextToken());
-            int month   = Integer.parseInt(inner.nextToken());
-            int days    = Integer.parseInt(inner.nextToken());
-            
-            month += expire;
-            
-            if(month > 12){
-                if(month%12 == 0){
-                    year += month/12 -1;
-                    month = 12;
-                }else {
-                    year += month/12;
-                    month = month%12;
-                }
-            }
-            
-            days -= 1; 
-            if(days == 0){
-                month --;
-                days = 28;
-            }
-            
-            System.out.printf("파기 날짜: %d.%d.%d\n", year, month, days);
-            
-            if(nowYear > year) {
-                ans.add((i+1)); 
-            }else if(nowYear == year && nowMonth > month){
-                ans.add((i+1)); 
-            }else if(nowYear == year && nowMonth == month && nowDays > days){
-                ans.add((i+1)); 
-            }
+            if(isExpire(Integer.parseInt(inner.nextToken()),
+                        Integer.parseInt(inner.nextToken()),
+                        Integer.parseInt(inner.nextToken()), 
+                        map.get(outer.nextToken()))) ans.add((i+1));
         }
         return ans.stream().mapToInt(i -> i).toArray();
+    }
+    
+    public boolean isExpire(int year, int month, int day, int expire) {
+        int input = year*12*28 + month*28 + day + expire*28; 
+        int now = nowYear*12*28 + nowMonth*28 + nowDays; 
+        
+        return input <= now? true : false;
     }
 }
