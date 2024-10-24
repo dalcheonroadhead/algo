@@ -59,7 +59,7 @@ class Solution {
                 else in++;
             }
             // System.out.printf("현재 정점 번호: %d / 진입차수: %d, 진출 차수: %d\n", i, in, out);
-            if((in == 1 && out == 0)||(in == 0 && out == 0)) answer[2]++;
+            if( out == 0) answer[2]++;
             if(in == 2 && out == 2) answer[3]++;
         }
         
