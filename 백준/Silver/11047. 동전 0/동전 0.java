@@ -18,7 +18,7 @@ public class Main {
         for(int i = N-1; i >= 0; i--){
             if(K/units[i] != 0) {
                 ans += K/units[i];
-                K -= (K/units[i])*units[i];
+                K = (K%units[i]);
             }
             if(K == 0) break;
         }
