@@ -42,6 +42,8 @@ public class Main {
             }else {
                 int o1 = forZero.poll();
                 int o2 = forZero.poll();
+                
+                if(o1 == 0 && o2 == 0) break;
                 acc += Math.max(o1+o2, o1*o2);
             }
         }
