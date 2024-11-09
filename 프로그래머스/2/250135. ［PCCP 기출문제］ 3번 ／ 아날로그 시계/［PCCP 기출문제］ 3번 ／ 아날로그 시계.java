@@ -53,11 +53,6 @@ class Solution {
         if(this.m_d >=360) this.m_d %= 360;
         if(this.s_d >=360) this.s_d %= 360;
         
-        if(cnt < 30) {
-        System.out.printf("이전 각도 %.3f, %.3f, %.3f ■■■ 현재 각도: %.3f, %.3f, %.3f ■■■ ans: %d \n", prevH, prevM, prevS, h_d,m_d,s_d, ans);
-            cnt++;
-        }
-        
         return ans;
     }
 }
