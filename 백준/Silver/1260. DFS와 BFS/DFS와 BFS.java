@@ -2,73 +2,83 @@ import java.io.*;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
+
 public class Main {
-    static ArrayList<Integer> [] list;
-    static boolean [] isVisited;
-    static int N,M,V;
-    static StringBuilder sb = new StringBuilder();
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException {
+        StringBuilder ans = new StringBuilder();
+        int V,E,S;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
+        StringTokenizer st= new StringTokenizer(br.readLine());
         V = Integer.parseInt(st.nextToken());
-        list = new ArrayList[N + 1];
+        E = Integer.parseInt(st.nextToken());
+        S = Integer.parseInt(st.nextToken());
 
-        for (int i = 1; i <= N; i++) {
-            list[i] = new ArrayList<>();
+        ArrayList<Integer> [] lists = new ArrayList[V+1];
+        for (int i = 1; i <= V; i++) {
+            lists[i] = new ArrayList<>();
         }
 
-        for (int i = 0; i < M; i++) {
+        for (int i = 0; i < E; i++) {
             st = new StringTokenizer(br.readLine());
-            int start   = Integer.parseInt(st.nextToken());
-            int end     = Integer.parseInt(st.nextToken());
-
-            if(!list[start].contains(end)){
-                list[start].add(end);
-                list[end].add(start);
-            }
-        }
-        for (int i = 1; i <= N; i++) {
-            Collections.sort(list[i]);
+            int start = Integer.parseInt(st.nextToken());
+            int end   = Integer.parseInt(st.nextToken());
+            // 양방향
+            lists[start].add(end);
+            lists[end].add(start);
         }
 
-        isVisited = new boolean[N+1];
-        dfs(V);
-        sb.append("\n");
-        isVisited = new boolean[N+1];
-        bfs(V);
+        for (int i = 1; i <= V; i++) {
+            Collections.sort(lists[i]);
+        }
 
-        System.out.println(sb);
+        boolean [] isVisited = new boolean[lists.length];
+        dfs(lists, S, isVisited, ans);
+        ans.append("\n");
+        bfs(lists,S,ans);
+        System.out.println(ans);
     }
 
-    public static void dfs (int now) {
+    public static void dfs(ArrayList<Integer> [] lists, int now, boolean [] isVisited, StringBuilder ans) {
+        ans.append(now).append(" ");
         isVisited[now] = true;
-        sb.append(now).append(" ");
-        for (int i = 0; i < list[now].size(); i++) {
-            int next = list[now].get(i);
-            if(!isVisited[next]){
-                dfs(next);
+
+        for (int i = 0; i < lists[now].size(); i++) {
+            int next = lists[now].get(i);
+            if(!isVisited[next]) {
+                dfs(lists, next, isVisited, ans);
             }
         }
     }
 
-    public static void bfs(int v) {
+    public static void bfs (ArrayList<Integer> [] lists, int S, StringBuilder ans){
+        boolean [] isVisited = new boolean[lists.length];
         ArrayDeque<Integer> aq1 = new ArrayDeque<>();
-        aq1.add(v);
-        isVisited[v] = true;
+        aq1.add(S);
+        isVisited[S] = true;
+
         while (!aq1.isEmpty()){
-            int now = aq1.poll();
-            sb.append(now).append(" ");
-            for (int i = 0; i < list[now].size(); i++) {
-                int next = list[now].get(i);
-                if(!isVisited[next]){
-                    isVisited[next] = true;
-                    aq1.add(next);
+            int qSize = aq1.size();
+            for (int i = 0; i < qSize; i++) {
+                int now = aq1.poll();
+                ans.append(now).append(" ");
+
+                for (int j = 0; j < lists[now].size(); j++) {
+                    int next = lists[now].get(j);
+                    if(!isVisited[next]){
+                        isVisited[next] = true;
+                        aq1.add(next);
+                    }
                 }
             }
+
         }
     }
 }
