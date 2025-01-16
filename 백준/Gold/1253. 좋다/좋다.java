@@ -5,45 +5,30 @@ import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
-
+    static int N, ans;
+    static int [] arr;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        int N = Integer.parseInt(br.readLine());
-        int [] arr = new int[N];
-
+        N = Integer.parseInt(br.readLine());
+        arr = new int [N];
         StringTokenizer st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
         }
-
         Arrays.sort(arr);
-        int cnt = 0;
-        for (int i = 0; i < N; i++) {
-            int temp = arr[i], start = 0, end = N-1;
+        for (int E = 0; E < N; E++) {
+            int target = arr[E];
+            int L = 0; int R = arr.length-1;
+            while (L < R) {
+                if(L == E) { L++; continue;}
+                if(R == E) { R--; continue;}
 
-            while (start != end){
-
-                if(start == i) {
-                    start++;
-                    continue;
-                }
-                if(end == i) {
-                    end--;
-                    continue;
-                }
-
-                if(arr[start] + arr[end] > temp){
-                    end--;
-                }else if(arr[start] + arr[end] < temp){
-                    start++;
-                }else if(arr[start] + arr[end] == temp){
-                    cnt++;
-                    break;
-                }
+                int now = arr[L] + arr[R];
+                if(now == target) { ans++; break;}
+                else if (now < target) L++;
+                else R--;
             }
         }
-        System.out.println(cnt);
-
+        System.out.println(ans);
     }
 }
