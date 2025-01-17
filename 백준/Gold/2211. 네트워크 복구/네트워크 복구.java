@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.PriorityQueue;
@@ -70,12 +69,6 @@ public class Main {
                     dists[next.idx].routes.addAll(dists[now.idx].routes);
                     dists[next.idx].routes.add(new Edge(now.idx, next.idx));
                     pq.add(new Dist(next.idx, dists[next.idx].dist, dists[next.idx].routes));
-                }
-                if(dists[next.idx].dist == dists[now.idx].dist + next.w &&
-                    dists[next.idx].routes.size() > dists[now.idx].routes.size() + 1) {
-                    dists[next.idx].routes.clear();
-                    dists[next.idx].routes.addAll(dists[now.idx].routes);
-                    dists[next.idx].routes.add(new Edge(now.idx, next.idx));
                 }
             }
         }
