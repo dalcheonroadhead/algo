@@ -30,6 +30,7 @@ public class Main {
             String A = strings[i];
             for (int j = i+1; j < N; j++) {
                 String B = strings[j];
+                if(max_cnt > B.length()) continue;
                 int now_cnt =same_cnt(A,B);
                 if(max_cnt < now_cnt){
                     max_cnt = now_cnt;
