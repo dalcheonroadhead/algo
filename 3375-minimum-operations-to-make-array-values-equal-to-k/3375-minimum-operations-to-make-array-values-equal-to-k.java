@@ -1,17 +1,20 @@
 class Solution {
     public int minOperations(int[] nums, int k) {
         int ans = 0;
-        TreeMap<Integer, Integer> map = new TreeMap<>();
-        for(int i = 0; i < nums.length; i++) {
-            map.compute(nums[i], (key, ov) -> (ov == null? 1 : ov+1));
+        boolean [] isAppear = new boolean[101];
+
+        for(int i = 0; i < nums.length; i ++) {
+            isAppear[nums[i]] = true;
         }
 
-        if(map.firstKey() < k) return -1;
+        Arrays.sort(nums);
+        System.out.println(Arrays.toString(nums));
 
-        while(map.lastKey() != k) {
-            map.compute(map.lastKey(), (key, ov) -> null);
-            ans++;
-            if(map.size() == 0) break;
+        for(int i = 1; i < 101; i ++) {
+            if(!isAppear[i]) continue;
+
+            if(isAppear[i] && i > k) ans++;
+            else if(isAppear[i] && i < k) return -1;
         }
 
         return ans;
