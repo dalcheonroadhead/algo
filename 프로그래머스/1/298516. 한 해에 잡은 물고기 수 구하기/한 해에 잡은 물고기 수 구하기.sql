@@ -2,5 +2,4 @@
 
 select count(*) as FISH_COUNT 
 from FISH_INFO
-where 1=1
-AND substr(time, 1, 4) = '2021';
+where substr(time, 1, 4) = '2021';
