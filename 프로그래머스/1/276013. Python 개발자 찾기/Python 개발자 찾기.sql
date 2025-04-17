@@ -1,0 +1,14 @@
+-- 코드를 작성해주세요
+
+SELECT 
+d.ID,
+d.EMAIL,
+d.FIRST_NAME,
+d.LAST_NAME
+FROM DEVELOPER_INFOS d
+WHERE SKILL_1 = 'Python'
+OR SKILL_2 = 'Python'
+OR SKILL_3 = 'Python'
+ORDER BY ID
+ASC;
+
