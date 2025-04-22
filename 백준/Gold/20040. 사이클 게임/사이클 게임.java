@@ -21,20 +21,16 @@ public class Main {
         for (int i = 0; i <= n; i++) {
             parents[i] = i;
         }
-        HashSet<Entries> set = new HashSet<>();
+
         for (int i = 1; i <= m; i++) {
             st = new StringTokenizer(br.readLine());
             int left = Integer.parseInt(st.nextToken());
             int right= Integer.parseInt(st.nextToken());
-            Entries now = new Entries(left, right);
-            if(set.contains(now)) continue;
-            else {
-                set.add(now);
-                if(union(left, right)) {
-                    System.out.println(i);
-                    return;
-                }
-            }
+
+            if(union(left, right)) {
+                System.out.println(i);
+                return;}
+
         }
         System.out.println(0);
     }
@@ -57,27 +53,5 @@ public class Main {
         if(parents[a] == a) return a;
         parents[a] = find(parents[a]);
         return parents[a];
-    }
-}
-
-class Entries {
-    int left;
-    int right;
-
-    public Entries (int left, int right){
-        this.left = left;
-        this.right = right;
-    }
-
-    @Override
-    public int hashCode() {
-        return this.left + this.right;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if(obj.getClass() != Entries.class) return  false;
-        Entries counterPart = (Entries) obj;
-        return (this.left == counterPart.left && this.right == counterPart.right);
     }
 }
