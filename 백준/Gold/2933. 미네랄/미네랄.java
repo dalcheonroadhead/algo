@@ -103,7 +103,7 @@ public class Main{
     }
 
     public static void fallDown() {
-        ArrayList<Coordinate> list = new ArrayList<>();
+        HashSet<Coordinate> list = new HashSet<>();
         for (int i = 0; i < R; i++) {
             for (int j = 0; j < C; j++) {
                 if(cave[i][j] == 'x' && !isVisited[i][j]){
