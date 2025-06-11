@@ -1,63 +1,20 @@
-import java.util.*; 
+import java.util.*;
 
 class Solution {
-    
     public boolean solution(String[] phone_book) {
-        boolean answer = true;
-        
-        Tri tri = new Tri();
-        
-        for(String phone_num : phone_book){
-            tri.insert(phone_num);
-        }
-        
+        HashMap<String, Boolean> map = new HashMap<>();
         for(String phone_num : phone_book) {
-            if(tri.isPrefix(phone_num)) return false;
+            map.putIfAbsent(phone_num, true);
         }
         
-        return answer;
-    }
-    
-}
-
-class Tri {
-    Node root;
-    
-    public Tri () {
-        this.root = new Node();
-    }
-    
-    
-    public void insert(String str) {
-        Node node = this.root;
-        
-        for(int i = 0; i < str.length(); i++){
-            char now = str.charAt(i);
-            node.children.putIfAbsent(now, new Node());
-            node = node.children.get(now);
+        for(int i = 0; i < phone_book.length; i++){
+            if(phone_book[i].length() == 1) continue;
+            for(int j = 1; j < phone_book[i].length(); j++){
+                if(map.getOrDefault(phone_book[i].substring(0,j), false)){
+                    return false;   
+                }
+            }
         }
-        node.isEnd = true;
-    }
-    
-    public boolean isPrefix(String str) {
-        Node node = this.root;
-        
-        for (int i = 0; i < str.length(); i++){
-            char now = str.charAt(i);
-            node = node.children.getOrDefault(now, null);
-            if(node == null) return false;
-        }
-        if(node.children.size() >= 1) return true;
-        return false;
-    }
-}
-
-class Node {
-    boolean isEnd;
-    HashMap<Character, Node> children;
-    
-    public Node () {
-        isEnd = false;
-        children = new HashMap<>();
+        return true;
     }
 }
