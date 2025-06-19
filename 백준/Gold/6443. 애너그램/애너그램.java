@@ -9,32 +9,43 @@ public class Main {
         int N = Integer.parseInt(br.readLine());
 
         for(int i = 0; i < N; i ++){
-            String word = br.readLine();
-            alphabet = new int [26];
-            
-            for(int j = 0; j < word.length(); j++){
-                alphabet[word.charAt(j) - 'a']++;
-            }
-            permutation(0, new char [word.length()], alphabet);
+            char [] arr = br.readLine().toCharArray();
+            Arrays.sort(arr);
+            ans.append(String.valueOf(arr)).append("\n");
+            while(np(arr)){};
         }
 
         System.out.println(ans.toString());
     }
 
-    public static void permutation(int depth, char [] answer, int [] alphabet) {
-        if(depth == answer.length){
-            ans.append(String.valueOf(answer)).append("\n");
-            return;
+    public static boolean np (char [] prev) {
+        // 1. 꼭대기 값 찾기
+        int peak  = prev.length - 1;
+        while (peak > 0 && prev[peak - 1] >= prev[peak]) peak--;
+        if(peak == 0) return false;
+
+        // 2. left보다 큰 최소값 right 찾아서 둘이 자리 바꾸기
+        int left = peak - 1;
+        int right = prev.length - 1;
+        while(left < right && prev[left] >= prev[right]) right--;
+
+        char temp = prev[right];
+        prev[right] = prev[left];
+        prev[left] = temp;
+
+        // 3. 꼭대기의 오른편 오름차순 정렬
+        left = peak;
+        right = prev.length -1;
+        while(left < right) {
+            char temp2 = prev[right];
+            prev[right] = prev[left];
+            prev[left] = temp2;
+            left++;
+            right--;
         }
-        
-        for(int i = 0; i < alphabet.length; i++){
-            if(alphabet[i] == 0) continue;
-            
-            alphabet[i]--;
-            answer[depth] = (char)(i + 'a');
-            permutation(depth+1, answer, alphabet);
-            alphabet[i]++;
-        }
-        
+
+        ans.append(String.valueOf(prev)).append("\n");
+
+        return true;
     }
 }
