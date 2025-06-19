@@ -18,31 +18,24 @@ public class Main {
 
     public static void back_tracking(int row, int col) {
         if(row == R) {
-            if(isValid()) ans++;
+            ans++;
             return;
         }
+        int nr = (col == C-1)? row+1 : row;
+        int nc = (col == C-1)? 0 : col+1;
+        back_tracking(nr,nc);
         
-        if(col == C-1) {
+        if(!isNemoNemo(row,col) && !OOB(row,col)) {
             b[row][col] = 1;
-            back_tracking(row+1, 0);
+            back_tracking(nr, nc);
             b[row][col] = 0;
-            back_tracking(row+1, 0);
-        }else{
-            b[row][col] = 1;
-            back_tracking(row, col+1);
-            b[row][col] = 0;
-            back_tracking(row, col+1);
         }
     }
 
-    private static boolean isValid(){
-        for(int i = 0 ; i < R; i++){
-            for(int j = 0; j < C; j++){
-                if(OOB(i+1, j+1)) continue;
-                if(b[i][j] == 1 && b[i+1][j] == 1 && b[i][j+1] == 1 && b[i+1][j+1] == 1) return false;
-            }
-        }
-        return true;
+    private static boolean isNemoNemo(int r, int c){
+        if(OOB(r-1, c-1)) return false;
+        if(b[r-1][c] == 1 && b[r-1][c-1] == 1 && b[r][c-1] == 1) return true;
+        return false;
     }
 
     private static boolean OOB(int r, int c){
