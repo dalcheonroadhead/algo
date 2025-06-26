@@ -2,33 +2,30 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-    static StringBuilder sb = new StringBuilder();
-    static int cnt = 0;
-    static int n,r;
-
-
-    public static void main(String[] args) throws IOException {
+    static int N,M;
+    static StringBuilder ans = new StringBuilder();
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        n = Integer.parseInt(st.nextToken());
-        r = Integer.parseInt(st.nextToken());
-        duple_combination(0, 0, new int [r]);
-        System.out.println(sb);
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        duple_permutation(0, 1, new int [M]);
+        System.out.println(ans);
     }
 
-    public static void duple_combination(int start, int depth, int [] answer) {
+    public static void duple_permutation(int depth, int start, int [] answer) {
         // base-case
-        if(depth == r) {
-            for(int now : answer){
-                sb.append(now+1).append(" ");
+        if(depth == M) {
+            for(int i = 0 ; i < answer.length; i++){
+                ans.append(answer[i]).append(" ");
             }
-            sb.append("\n");
+            ans.append("\n");
             return;
         }
 
-        for(int i = start; i < n; i++){
+        for(int i = start; i <= N; i++){
             answer[depth] = i;
-            duple_combination(i, depth+1, answer);
+            duple_permutation(depth+1, i, answer);
         }
     }
 }
