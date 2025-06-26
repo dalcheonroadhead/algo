@@ -67,6 +67,7 @@ public class Main {
             for(int i = 0; i < lists[now.i].size(); i++){
                 Vertex next = lists[now.i].get(i);
                 inDegree[next.i]--;
+                // 간선들 중 가장 가중치가 큰 것으로 업데이트 하겠다.
                 critical_path[next.i] = Math.max(critical_path[next.i], critical_path[now.i] + next.w);
 
                 if(inDegree[next.i] == 0) {
@@ -91,7 +92,7 @@ public class Main {
                 Vertex next = reverse[now.i].get(j);
                 if(critical_path[next.i] + next.w == critical_path[now.i]){
                     cnt++;
-                    if(!isVisited[next.i]){
+                    if(!isVisited[next.i]){ // 간선으로는 카운트 해줬지만, 이미 방문 했다면 다음 방문 정점으로는 안 넣는다.
                         stack.add(new Vertex(next.i, next.w));
                         isVisited[next.i] = true;
                     }
