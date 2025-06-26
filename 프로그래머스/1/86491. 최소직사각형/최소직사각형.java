@@ -1,22 +1,18 @@
-import java.util.*;
-
-
 class Solution {
     public int solution(int[][] sizes) {
-
-        int garo = 0;
-        int sero = 0;
-
-        for(int i = 0; i < sizes.length; i++) {
-            int max_now = Math.max(sizes[i][0], sizes[i][1]);
-            int min_now = Math.min(sizes[i][0], sizes[i][1]);
+        int GARO = 0;
+        int SERO = 0;
+        
+        for(int i = 0; i <sizes.length; i++){
+            int a = sizes[i][0];
+            int b = sizes[i][1];
             
-            garo = Math.max(garo, max_now);
-            sero = Math.max(sero, min_now);
+            int garo = Math.max(a,b);
+            int sero = Math.min(a,b);
+            
+            GARO = Math.max(GARO, garo);
+            SERO = Math.max(SERO, sero);
         }
-        
-
-        
-        return garo*sero;
+        return GARO * SERO;
     }
 }
