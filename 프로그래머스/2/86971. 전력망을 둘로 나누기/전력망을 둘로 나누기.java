@@ -1,61 +1,74 @@
 import java.util.*;
 
 class Solution {
+    // bfs로 푼다.
+    // 인접 리스트를 만든다.
+    // wires에서 끊어낼 값을 하나 선택하고 끊어낸 두 노드를 시작점으로 BFS를 타본다.
+    // 그 차이로 최소값을 갱신한다.
+    
     static ArrayList<Integer> [] lists;
+    static int min = Integer.MAX_VALUE;
     
     public int solution(int n, int[][] wires) {
-        int answer = Integer.MAX_VALUE;
-        lists = new ArrayList [n + 1];
+        lists = new ArrayList [n+1];
         
-        for(int i = 1; i < n+1; i++){
+        for(int i = 0; i < n+1; i++){
             lists[i] = new ArrayList<>();
         }
         
         for(int i = 0; i < wires.length; i++){
-            int left = wires[i][0];
-            int right = wires[i][1];
-            
-            lists[left].add(right);
-            lists[right].add(left);
+            int start = wires[i][0];
+            int end = wires[i][1];
+
+            lists[start].add(end);
+            lists[end].add(start);
         }
-        
         
         for(int i = 0; i < wires.length; i++){
-            int left = wires[i][0];
-            int right = wires[i][1];
-            
-            lists[left].remove(Integer.valueOf(right));
-            lists[right].remove(Integer.valueOf(left));
-            
-            int left_cnt = bfs(left, n);
-            int right_cnt = bfs(right, n);
-            
-            answer = Math.min(answer, Math.abs(left_cnt - right_cnt));
-            
-            lists[left].add(right);
-            lists[right].add(left);
+            int a = wires[i][0];
+            int b = wires[i][1];
+            bfs(a,b);
         }
-        return answer;
+        return min;
     }
     
-    public int bfs(int start, int n) {
-        int answer = 0;
-        boolean [] isVisited = new boolean [n+1];
-        ArrayDeque<Integer> aq1 = new ArrayDeque<>();
-        isVisited[start] = true;
-        aq1.add(start); 
+    
+    public void bfs(int a, int b){
+        boolean [] check = new boolean[lists.length];
+        check[a] = check[b] = true;
+        int a_cnt = 0;
+        int b_cnt = 0;
         
-        while(!aq1.isEmpty()){
+        ArrayDeque<Integer> aq1 = new ArrayDeque<>();
+        aq1.add(a);
+        
+        while(!aq1.isEmpty()) {
             int now = aq1.poll();
+            
             for(int i = 0; i < lists[now].size(); i++){
                 int next = lists[now].get(i);
-                if(isVisited[next]) continue;
-                answer++;
-                isVisited[next] =true;
+                if(check[next]) continue;
+                
+                check[next] = true;
+                a_cnt++;
                 aq1.add(next);
             }
         }
         
-        return answer;
+        aq1.add(b);
+        while(!aq1.isEmpty()) {
+            int now = aq1.poll();
+            
+            for(int i = 0; i < lists[now].size(); i++){
+                int next = lists[now].get(i);
+                if(check[next]) continue;
+                
+                check[next] = true;
+                b_cnt++;
+                aq1.add(next);
+            }
+        }
+        
+        min = Math.min(min, Math.abs(a_cnt-b_cnt));
     }
 }
