@@ -2,33 +2,42 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-    static String str;
-    static boolean [] isVisited;
+
+    static boolean [] check;
+    static StringBuilder sb = new StringBuilder();
+    static StringBuilder ans = new StringBuilder();
+    
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        str = br.readLine();
-        isVisited = new boolean[str.length()];
-        zoac(0, str.length()-1);
+        char [] ch = br.readLine().toCharArray();
+        check = new boolean[ch.length];
+        recur(ch, 0, ch.length-1);
+        System.out.println(ans);
     }
 
-    public static void zoac(int left, int right) {
-        // base-case
+    public static void recur(char [] ch, int left, int right){
         if(left > right) return;
-        
-        int idx = left;
+
+        // calculate
+        int pos = left;
+        char now = ch[left];
+
         for(int i = left; i <= right; i++){
-            if(isVisited[i]) continue;
-            if(str.charAt(i) < str.charAt(idx)) idx = i;
+            if(now > ch[i]){
+                pos = i;
+                now = ch[i];
+            }
         }
-        isVisited[idx] = true;
-
-        for(int i = 0; i < str.length(); i++){
-            if(isVisited[i]) System.out.print(str.charAt(i));
+        check[pos] = true;
+        for(int i = 0; i < ch.length; i++){
+            if(check[i]) sb.append(ch[i]);
         }
-        System.out.println();
+        ans.append(sb.toString()).append("\n");
+        sb.setLength(0);
 
-        zoac(idx+1, right);
-        zoac(left, idx-1);
+        // next recursive
+        recur(ch, pos+1, right);
+        recur(ch, left, pos-1);
         
     }
 }
