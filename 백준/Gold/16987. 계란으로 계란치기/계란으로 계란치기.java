@@ -37,12 +37,12 @@ public class Main {
     }
 
     public static void recur (int depth, Egg [] eggs, int cnt){
-        ans = Math.max(ans,cnt);
         if(depth == N) {
+            ans = Math.max(ans,cnt);
             return;
         }
-        // 이미 깨진 계란이면 다음 계란으로 넘어간다.
-        if(eggs[depth].hp <= 0) {
+        // 이미 깨진 계란이거나, 이거 제외 모든 계란이 이미 다 깨진 상태라면 다음 계란으로 넘어간다.
+        if(eggs[depth].hp <= 0 || cnt == N-1) {
             recur(depth+1, eggs, cnt);
             return;
         }
