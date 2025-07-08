@@ -1,52 +1,55 @@
-import java.io.*;
 import java.util.*;
 
 class Solution {
     public int[] solution(String[] operations) {
-        
-        TreeMap<Integer,Integer> map = new TreeMap<>();
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a,b) -> (b-a));
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>((a,b) -> (a-b));
+        HashMap<Integer, Integer> map = new HashMap<>();
         
         for(int i = 0; i < operations.length; i++){
             StringTokenizer st = new StringTokenizer(operations[i]);
-            String order = st.nextToken();
+            char order = st.nextToken().charAt(0);
+            int value = Integer.parseInt(st.nextToken());
             
-            switch(order){
-                case "I": {
-                    int v = Integer.parseInt(st.nextToken());
-                    if(map.get(v) == null){
-                        map.put(v, 1);
-                    }else {
-                        map.put(v, map.get(v)+1);
-                    }
+            switch (order) {
+                case 'I': {
+                    maxHeap.add(value);
+                    minHeap.add(value);
+                    map.put(value, value);
                     break;
                 }
-                case "D": {
-                    
-                    if(map.isEmpty()) break;
-                    
-                    int order2 = Integer.parseInt(st.nextToken());
-                    int k = 0;
-                    if(order2 == 1) {
-                        k = map.lastKey();
+                case 'D': {
+                    PriorityQueue<Integer> now;
+                    if(value == 1){ 
+                        now = maxHeap;
                     }else {
-                        k = map.firstKey();
+                        now = minHeap;
                     }
-                    if(map.get(k) >= 2) {
-                        map.put(k, map.get(k)-1);
-                    }else if(map.get(k) == 1){
-                        map.remove(k);
-                    }
+                    while(now.size() > 0){
+                        int out = now.poll();
+                        if(map.get(out) != null){
+                            map.remove(out);
+                            break;
+                        }
+                    }   
                     break;
                 }
             }
         }
         
-        
-        
-        if(map.size() == 0) return new int[]{0,0};
-        else {
-            return new int[]{map.lastKey(), map.firstKey()};
+        while(maxHeap.size() > 0){
+            int peek = maxHeap.peek();
+            if(map.get(peek) == null) maxHeap.poll();
+            else break;
         }
         
+        while(minHeap.size() > 0) {
+            int peek = minHeap.peek();
+            if(map.get(peek) == null) minHeap.poll();
+            else break;
+        }
+        
+        if(maxHeap.size() == 0 && minHeap.size() == 0) return new int [] {0,0};
+        else return new int [] {maxHeap.peek(), minHeap.peek()};
     }
 }
