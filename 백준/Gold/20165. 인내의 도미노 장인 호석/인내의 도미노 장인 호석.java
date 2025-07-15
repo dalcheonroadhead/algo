@@ -53,25 +53,34 @@ public class Main {
         // 공격
         ArrayDeque<Coordinate> aq1 = new ArrayDeque<>();
         if(isFall[now.atkR][now.atkC]) return; // 시작점이 이미 떨군 곳이면 넘어가기
-        if(board[now.atkR][now.atkC] == 1) return;  // 자기 자신만 떨어지는 지점이면 넘어가기
-        aq1.add(new Coordinate(now.atkR , now.atkC));
-        int remain_fall = board[now.atkR][now.atkC];
-        int cnt = 0;
+        isFall[now.atkR][now.atkC] = true;
+        int cnt = 1; // 넘어진 값의 개수
+        if(board[now.atkR][now.atkC] == 1) {
+            sum += cnt;
+            return;  // 자기 자신만 떨어지는 지점이면 넘어가기
+        }
+        aq1.add(new Coordinate(now.atkR + dir[now.dir][0], now.atkC + dir[now.dir][1]));
+        int remain_fall = board[now.atkR][now.atkC] - 1; // 앞으로 넘어질 도미노의 개수
+
+
         while(!aq1.isEmpty()){
-            remain_fall--;
             Coordinate cur = aq1.poll();
             // OOB이면 끝내기
             if(OOB(cur.r, cur.c)) break;
-            // 넘어져야할 보드 수가 아직 0이 아니다. -> 현 block이 쓰러졌든 아니든 무조건 다음 block 넣기
-            if(remain_fall > 0) aq1.add(new Coordinate(cur.r + dir[now.dir][0], cur.c+dir[now.dir][1]));
-            // 다음 block이 넘어지지 않았다. -> 다음 block의 높이와 remain_fall 비교 최대값 갱신
-            if(!OOB(cur.r+dir[now.dir][0], cur.c+dir[now.dir][1]) && !isFall[cur.r + dir[now.dir][0]][cur.c+dir[now.dir][1]]) remain_fall = Math.max(board[cur.r + dir[now.dir][0]][cur.c+dir[now.dir][1]], remain_fall);
-            // 넘어진 것 표시
+
+            // 현 block이 넘어지지 않았다. -> 넘어뜨리기, 앞으로 넘어질 도미노 개수 깎기
+            remain_fall--;
+            // 금방 넘어진 녀석이 넘어뜨릴 수 있는 값의 개수와 기존의 앞으로 넘어질 도미노 개수 비교해서 최대값 갱신
             if(!isFall[cur.r][cur.c]){
                 isFall[cur.r][cur.c] = true;
                 cnt++;
+                remain_fall = Math.max(board[cur.r][cur.c]-1, remain_fall);
             }
+
+            // 넘어져야할 보드 수가 아직 0이 아니다. -> 현 block이 쓰러졌든 아니든 무조건 다음 block 넣기
+            if(remain_fall > 0) aq1.add(new Coordinate(cur.r + dir[now.dir][0], cur.c+dir[now.dir][1]));
         }
+
         sum += cnt;
     }
 
