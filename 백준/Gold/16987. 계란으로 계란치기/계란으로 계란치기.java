@@ -1,65 +1,65 @@
 import java.util.*;
 import java.io.*;
 
+// 백준 16987 계란으로 계란치기
+// 계란의 개수가 최대 8개밖에 되지 않으므로 그냥 무식하게 완탐 돌리면 풀릴 것 같다.
 public class Main {
-
     static class Egg {
-        int hp;
+        int d;
         int w;
 
-        public Egg(int hp, int w){
-            this.hp = hp;
+        public Egg (int d, int w) {
+            this.d = d;
             this.w = w;
         }
 
         @Override
-        public String toString() {
-            return "체력:"+ this.hp + "\t 무게: " + this.w;
+        public String toString(){
+            return String.format("duration: %d, weight: %d", this.d, this.w);
         }
     }
-    static int N;
-    static int ans = 0;
 
-    public static void main(String[] args) throws Exception {
+    static int N;
+    static Egg [] eggs;
+    static int answer = 0;
+
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
-        Egg [] eggs = new Egg[N];
-
-        for(int i = 0; i < N; i++){
+        eggs = new Egg [N];
+        for (int i = 0 ; i < N; i++){
             StringTokenizer st = new StringTokenizer(br.readLine());
-            int hp = Integer.parseInt(st.nextToken());
+            int duration = Integer.parseInt(st.nextToken());
             int weight = Integer.parseInt(st.nextToken());
-            eggs[i] = new Egg(hp, weight);
+            eggs[i] = new Egg(duration, weight);
         }
-
-        recur(0, eggs, 0);
-        System.out.println(ans);
+        recur(0, 0);
+        System.out.println(answer);
     }
+    // BACK-TRACKING
+    public static void recur (int index , int cnt) {
+        answer = Math.max(answer, cnt);
+        // 손에 쥐려는 게 깨져있다.
+        if(index == N) return;
+        if(eggs[index].d <= 0) {
+            recur(index+1, cnt);
+            return;
+        }
 
-    public static void recur (int depth, Egg [] eggs, int cnt){
-        if(depth == N) {
-            ans = Math.max(ans,cnt);
-            return;
-        }
-        // 이미 깨진 계란이거나, 이거 제외 모든 계란이 이미 다 깨진 상태라면 다음 계란으로 넘어간다.
-        if(eggs[depth].hp <= 0 || cnt == N-1) {
-            recur(depth+1, eggs, cnt);
-            return;
-        }
-        for(int i = 0; i < N; i++){
-            if(i == depth) continue;
-            if(eggs[i].hp <= 0) continue;
+        for (int i = 0; i < N; i++) {
+            if(index == i) continue; // 같은 거 깰 때 넘어가기
+            if(eggs[i].d <= 0) continue; // 깨려는 대상이 이미 깨져 있으면 넘어가기
 
             int new_cnt = cnt;
-            eggs[i].hp -= eggs[depth].w;
-            eggs[depth].hp -= eggs[i].w;
+            eggs[index].d -= eggs[i].w;
+            eggs[i].d -= eggs[index].w;
 
-            if(eggs[i].hp <= 0) new_cnt++;
-            if(eggs[depth].hp <= 0) new_cnt++;
+            if(eggs[index].d <= 0) new_cnt++;
+            if(eggs[i].d <= 0) new_cnt++;
+            recur(index+1, new_cnt);
 
-            recur(depth+1, eggs, new_cnt);
-            eggs[i].hp += eggs[depth].w;
-            eggs[depth].hp += eggs[i].w;
+            eggs[index].d += eggs[i].w;
+            eggs[i].d += eggs[index].w;
         }
     }
 }
