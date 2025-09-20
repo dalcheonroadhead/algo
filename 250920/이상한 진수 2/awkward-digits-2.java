@@ -13,6 +13,9 @@ public class Main {
                 nums[i] = '1';
                 isValid = true;
             }
+            if(!isValid && i == nums.length-1){
+                nums[nums.length-1] = '0';
+            }
             if(nums[i] == '1') ans += pow(1, nums.length-1-i);
         }
         System.out.println(ans);
