@@ -13,8 +13,16 @@ public class Main {
                 nums[i] = '1';
                 isValid = true;
             }
-            if(nums[i] == '1') ans += Math.pow(2, nums.length-1 - i);
+            if(nums[i] == '1') ans += pow(1, nums.length-1-i);
         }
         System.out.println(ans);
+    }
+
+    public static int pow(int num, int exp){
+        while(exp > 0){
+            num *= 2;
+            exp--;
+        }
+        return num;
     }
 }
