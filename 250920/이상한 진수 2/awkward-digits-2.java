@@ -1,0 +1,20 @@
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader (new InputStreamReader(System.in));
+        char [] nums = br.readLine().toCharArray();
+        StringBuilder sb = new StringBuilder();
+        int ans = 0;
+        boolean isValid = false;
+        for(int i = 0; i < nums.length; i++){
+            if(!isValid && nums[i] != '1') {
+                nums[i] = '1';
+                isValid = true;
+            }
+            if(nums[i] == '1') ans += Math.pow(2, nums.length-1 - i);
+        }
+        System.out.println(ans);
+    }
+}
