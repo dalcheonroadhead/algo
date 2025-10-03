@@ -1,61 +1,54 @@
-import java.io.*;
 import java.util.*;
 
 class Solution {
-    // 1. make one dimension array which represent land array's column to store amount oil in each column; 
-    // 2. return Max amount 
-    static int [] oils;
-    static int [][] dir = {{0,1},{0,-1},{1,0},{-1,0}};
+    static int R,C;
     public int solution(int[][] land) {
-        oils = new int[land[0].length];
-        for(int i = 0; i < land.length; i++){
-            for(int j = 0; j < land[i].length; j++){
-                if(land[i][j] == 1) bfs(i,j,land);
+        int answer = 0;
+        R = land.length;
+        C = land[0].length;
+        boolean [][] oil = new boolean [R][C];
+        int [] col = new int [C];
+        for (int i = 0; i < R; i++){
+            for (int  j = 0; j <  C; j++){
+                if(land[i][j] != 0 && !oil[i][j]) bfs(i,j, oil, land, col);
             }
         }
-        Arrays.sort(oils);
-        return oils[oils.length-1];
+        Arrays.sort(col);
+        return col[C-1];
     }
     
-
+   
     
-    
-    public void bfs (int r, int c, int [][] land){
-        // 0 = soil, 1 = oil, 2 = visited already
-        ArrayDeque<Coordinate> aq1 = new ArrayDeque<>();
-        HashSet<Integer> set = new HashSet<>();
-        aq1.add(new Coordinate(r,c));
-        set.add(c);
-        land[r][c] = 2;
-        int acc = 1;
+    public void bfs (int r, int c, boolean [][] oil, int [][] land, int [] col) {
+        int [][] dir = new int[][] {{0,1},{0,-1},{1,0},{-1,0}};
+        int sum = 1;
+        ArrayDeque<int[]> aq1 = new ArrayDeque<>();
+        aq1.add(new int[]{r,c});
+        oil[r][c] = true;
+        boolean [] cols = new boolean [C];
+        cols[c] = true;
         while(!aq1.isEmpty()){
-            Coordinate now = aq1.poll();
-            
+            int [] now = aq1.poll();
             for(int i = 0; i < 4; i++){
-                int nr = now.r + dir[i][0];
-                int nc = now.c + dir[i][1];
-                
-                if(nr >= land.length || nr < 0 || nc >= land[0].length || nc < 0) continue;
-                if(land[nr][nc] == 0 || land[nr][nc] == 2) continue;
-                acc++;
-                land[nr][nc] = 2;
-                set.add(nc);
-                aq1.add(new Coordinate(nr,nc));
+                int nr = now[0] + dir[i][0];
+                int nc = now[1] + dir[i][1];
+                if(OOB(nr,nc)) continue;
+                if(land[nr][nc] != 1) continue;
+                if(oil[nr][nc]) continue;
+                oil[nr][nc] = true;
+                cols[nc] = true;
+                sum++;
+                aq1.add(new int[]{nr,nc});
             }
         }
         
-        for(int column : set){
-            oils[column] += acc;
+        for(int i = 0; i < C; i++){
+            if(cols[i]) col[i] += sum;
         }
+       
     }
-}
-
-class Coordinate {
-    int r; 
-    int c; 
     
-    public Coordinate (int r, int c){
-        this.r = r;
-        this.c = c;
+    public boolean OOB (int r, int c) {
+        return r < 0 || c < 0 || r >= R || c>=C;
     }
 }
