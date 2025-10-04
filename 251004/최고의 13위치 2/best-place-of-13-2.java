@@ -11,14 +11,38 @@ public class Main {
             for(int j = 0; j < n; j++)
                 arr[i][j] = sc.nextInt();
         // Please write your code here.
-        ArrayList<Integer> list = new ArrayList<>();
+        int answer = 0;
         for(int i = 0; i < n; i++){
             for(int j = 0; j < n-2; j++){
                 acc[i][j] = arr[i][j] + arr[i][j+1] + arr[i][j+2];
-                list.add(acc[i][j]);
             }
         }
-        Collections.sort(list);
-        System.out.println((list.get(list.size()-1) + list.get(list.size()-2)));
+        int r,c,v;
+        r = c = v = 0;
+        for (int i = 0 ; i < n ; i++) {
+            for (int j = 0; j < n; j++){
+                if(v < acc[i][j]) {
+                    v = acc[i][j];
+                    r = i; c = j;
+                }
+            }
+        }
+        answer += v;
+        acc[r][c] = -99999;
+        acc[r][c+1] = -99999;
+        acc[r][c+2] = -99999999;
+
+        r = c = v = 0;
+        for (int i = 0 ; i < n ; i++) {
+            for (int j = 0; j < n; j++){
+                if(v < acc[i][j]) {
+                    v = acc[i][j];
+                    r = i; c = j;
+                }
+            }
+        }
+        answer += v;
+
+        System.out.println(answer);
     }
 }
