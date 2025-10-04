@@ -18,11 +18,17 @@ public class Main {
                 acc[i][j] = arr[i][j] + arr[i][j+1] + arr[i][j+2];
             }
         }
+
+        // for(int [] row : acc){
+        //     System.out.println(Arrays.toString(row));
+        // }
+        // System.out.println();
+
         int r,c,v;
         r = c = v = 0;
         for (int i = 0 ; i < n ; i++) {
             for (int j = 0; j < n; j++){
-                if(v < acc[i][j]) {
+                if(v <= acc[i][j]) {
                     v = acc[i][j];
                     r = i; c = j;
                 }
@@ -35,6 +41,12 @@ public class Main {
         if(!OOB(r,c-1)) acc[r][c-1] = -99999;
         if(!OOB(r,c-2)) acc[r][c-2] = -999999;
         
+
+        // for(int [] row : acc){
+        //     System.out.println(Arrays.toString(row));
+        // }
+
+
         r = c = v = 0;
         for (int i = 0 ; i < n ; i++) {
             for (int j = 0; j < n; j++){
