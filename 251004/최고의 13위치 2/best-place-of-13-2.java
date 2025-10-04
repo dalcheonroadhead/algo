@@ -23,7 +23,10 @@ public class Main {
             int secR = chosen[1][0];
             int secC = chosen[1][1];
             int sum = arr[firR][firC] + arr[firR][firC+1] + arr[firR][firC+2] + arr[secR][secC] + arr[secR][secC+1] + arr[secR][secC+2];
-            ans = Math.max(ans, sum);
+            if(ans < sum){
+                ans = sum;
+            //    System.out.printf("(%d %d) (%d %d) (%d %d) \t, (%d %d) (%d %d) (%d %d) \n", firR,firC,firR,firC+1, firR,firC+2, secR,secC, secR,secC+1, secR,secC+2);
+            }
             return;
         }
         
@@ -32,15 +35,11 @@ public class Main {
                 if(check[r][c] || check[r][c+1] || check[r][c+2]) continue;
                 chosen[depth][0] = r;
                 chosen[depth][1] = c;
-                check[r][c] = true;
-                check[r][c+1] = true;
-                check[r][c+2] = true;
+                check[r][c] = check[r][c+1] = check[r][c+2] = true;
                 combination( (c == n-3)? r+1 : r, (c == n-3)? 0 : c+1, depth+1, chosen, check);
-                check[r][c] = false;
-                check[r][c+1] = false;
-                check[r][c+2] = false;
-
+                check[r][c] = check[r][c+1] = check[r][c+2] = false;
             }
+            startC = 0;
         }
     }
 
