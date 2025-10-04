@@ -36,8 +36,8 @@ public class Main {
         }
         answer += v;
         acc[r][c] = -99999;
-        acc[r][c+1] = -99999;
-        acc[r][c+2] = -99999999;
+        if(!OOB(r,c+1)) acc[r][c+1] = -99999;
+        if(!OOB(r,c+2)) acc[r][c+2] = -99999999;
         if(!OOB(r,c-1)) acc[r][c-1] = -99999;
         if(!OOB(r,c-2)) acc[r][c-2] = -999999;
         
