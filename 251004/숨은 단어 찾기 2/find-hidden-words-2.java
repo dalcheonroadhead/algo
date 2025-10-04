@@ -16,8 +16,8 @@ public class Main {
         for(int i = 0; i < n; i++){
             for(int j = 0; j < m; j++){
                 if(alpha[i][j] == 'L'){
-                    if(garo_s(i,j)) { cnt++;}
-                    if(garo_r(i,j)) { cnt++;}
+                    if(garo_s(i,j)) {cnt++;}
+                    if(garo_r(i,j)) {cnt++;}
                     if(sero_s(i,j)) {cnt++;}
                     if(sero_r(i,j)) {cnt++;}
                     if(right_dagak_s(i,j)) {cnt++;}
@@ -31,7 +31,7 @@ public class Main {
     }
 
     public static boolean garo_s(int r, int c) {
-        return !OOB(r,c) && !OOB(r, c+1) && !OOB(r, c+2) && alpha[r][c] == 'L' && alpha[r][c+1] == 'E' && alpha[r][c+1] == 'E';
+        return !OOB(r,c) && !OOB(r, c+1) && !OOB(r, c+2) && alpha[r][c] == 'L' && alpha[r][c+1] == 'E' && alpha[r][c+2] == 'E';
     }
     public static boolean garo_r(int r, int c) {
         return !OOB(r,c) && !OOB(r, c-1) && !OOB(r, c-2) && alpha[r][c] == 'L' && alpha[r][c-1] == 'E' && alpha[r][c-2] == 'E';
