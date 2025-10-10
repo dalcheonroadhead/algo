@@ -1,43 +1,49 @@
 import java.util.*;
 
 class Solution {
-    static int [] parents = new int [101];
+    static class Edge {
+        int dest;
+        int cost;
+        
+        public Edge(int dest, int cost){
+            this.dest = dest;
+            this.cost = cost;
+        }
+    }
+    
+    static boolean [] check;
+    static ArrayList<ArrayList<Edge>> graph = new ArrayList<>();
     
     public int solution(int n, int[][] costs) {
         int answer = 0;
-        for(int i = 0; i < 101; i++){
-            parents[i] = i;
+        check = new boolean[n+1];
+        for(int i = 0; i < n+1; i++){
+            graph.add(new ArrayList<>());
         }
-        Arrays.sort(costs, (arr1, arr2) -> arr1[2] - arr2[2]);
         
         for(int i = 0; i < costs.length; i++){
-            int start = costs[i][0];
-            int end = costs[i][1];
-            int v = costs[i][2];
+            int a = costs[i][0];
+            int b = costs[i][1];
+            int c = costs[i][2];
             
-            int ancestorA = find(start);
-            int ancestorB = find(end);
-            
-            if(ancestorA == ancestorB) continue;
-            union(start, end);
-            answer += v;
+            graph.get(a).add(new Edge(b,c));
+            graph.get(b).add(new Edge(a,c));
+        }
+        
+        PriorityQueue<Edge> pq = new PriorityQueue<>((o1,o2) -> o1.cost - o2.cost);
+        pq.add(new Edge(0,0));
+        while(!pq.isEmpty()){
+            Edge now = pq.poll();
+            if(check[now.dest]) continue;
+            check[now.dest] = true;
+            answer += now.cost;
+            for(int i = 0; i < graph.get(now.dest).size(); i++){
+                Edge next = graph.get(now.dest).get(i);
+                if(check[next.dest]) continue;
+                pq.add(new Edge(next.dest, next.cost));
+            }
         }
         
         return answer;
-    }
-    
-    
-    public void union (int a, int b){
-        int ancestorA = find(a);
-        int ancestorB = find(b);
-        
-        if(ancestorA < ancestorB){
-            parents[ancestorB] = ancestorA;
-        }else parents[ancestorA] = ancestorB;
-    }
-    
-    public int find(int now) {
-        if(parents[now] == now) return now;
-        return parents[now] = find(parents[now]);
     }
 }
